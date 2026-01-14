@@ -1,39 +1,51 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Ramal</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<h1 th:text="${ramal.id == null ? 'Cadastrar Ramal' : 'Editar Ramal'}"></h1>
+<div th:replace="layout/base :: layout(
+        ~{::section},
+        ${ramal.id == null ? 'Cadastrar Ramal' : 'Editar Ramal'}
+     )">
 
-<form th:action="@{/ramais/salvar}" th:object="${ramal}" method="post">
+    <section class="col-md-6 mx-auto">
 
-    <!-- Campo oculto para edição -->
-    <input type="hidden" th:field="*{id}"/>
+        <h2 class="mb-4"
+            th:text="${ramal.id == null ? 'Cadastrar Ramal' : 'Editar Ramal'}">
+        </h2>
 
-    <p>
-        <label>Ramal:</label><br>
-        <input type="number" th:field="*{ramal}" required>
-    </p>
+        <form th:action="@{/ramais/salvar}" th:object="${ramal}" method="post">
 
-    <p>
-        <label>Nome:</label><br>
-        <input type="text" th:field="*{nome}" required>
-    </p>
+            <input type="hidden" th:field="*{id}"/>
 
-    <p>
-        <label>Setor:</label><br>
-        <input type="text" th:field="*{setor}" required>
-    </p>
+            <div class="mb-3">
+                <label class="form-label">Ramal</label>
+                <input type="number" th:field="*{ramal}" class="form-control" required>
+            </div>
 
-    <p>
-        <button type="submit">Salvar</button>
-        <a th:href="@{/ramais}">Cancelar</a>
-    </p>
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" th:field="*{nome}" class="form-control" required>
+            </div>
 
-</form>
+            <div class="mb-3">
+                <label class="form-label">Setor</label>
+                <input type="text" th:field="*{setor}" class="form-control" required>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a th:href="@{/ramais}" class="btn btn-secondary">
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-success">
+                    Salvar
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
 
 </body>
 </html>
