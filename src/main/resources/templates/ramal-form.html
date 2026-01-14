@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Ramal</title>
+</head>
+<body>
+
+<h1 th:text="${ramal.id == null ? 'Cadastrar Ramal' : 'Editar Ramal'}"></h1>
+
+<form th:action="@{/ramais/salvar}" th:object="${ramal}" method="post">
+
+    <!-- Campo oculto para edição -->
+    <input type="hidden" th:field="*{id}"/>
+
+    <p>
+        <label>Ramal:</label><br>
+        <input type="number" th:field="*{ramal}" required>
+    </p>
+
+    <p>
+        <label>Nome:</label><br>
+        <input type="text" th:field="*{nome}" required>
+    </p>
+
+    <p>
+        <label>Setor:</label><br>
+        <input type="text" th:field="*{setor}" required>
+    </p>
+
+    <p>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/ramais}">Cancelar</a>
+    </p>
+
+</form>
+
+</body>
+</html>

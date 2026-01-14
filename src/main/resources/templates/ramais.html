@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ramais da Empresa</title>
+</head>
+<body>
+
+<h1>Lista de Ramais</h1>
+
+<p>
+    <a th:href="@{/ramais/novo}">➕ Cadastrar Novo Ramal</a>
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ramal</th>
+        <th>Nome</th>
+        <th>Setor</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:if="${#lists.isEmpty(ramais)}">
+        <td colspan="5">Nenhum ramal cadastrado.</td>
+    </tr>
+
+    <tr th:each="r : ${ramais}">
+        <td th:text="${r.id}"></td>
+        <td th:text="${r.ramal}"></td>
+        <td th:text="${r.nome}"></td>
+        <td th:text="${r.setor}"></td>
+        <td>
+            <a th:href="@{/ramais/editar/{id}(id=${r.id})}">Editar</a>
+            |
+            <a th:href="@{/ramais/excluir/{id}(id=${r.id})}"
+               onclick="return confirm('Tem certeza que deseja excluir este ramal?');">
+                Excluir
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
