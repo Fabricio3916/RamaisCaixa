@@ -3,6 +3,7 @@ package caixa.ramaiscaixa.service;
 import caixa.ramaiscaixa.model.Ramal;
 import caixa.ramaiscaixa.repository.RamalRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -16,7 +17,10 @@ public class RamalService {
     }
 
     public List<Ramal> listarTodos() {
-        return repository.findAll();
+        return repository.findAll(
+                Sort.by("setor").ascending()
+                        .and(Sort.by("nome").ascending())
+        );
     }
 
     public Ramal salvar(Ramal ramal) {
