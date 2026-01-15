@@ -23,6 +23,31 @@ public class RamalService {
         );
     }
 
+    public List<Ramal> buscar(String termo) {
+
+        Sort ordenacao = Sort.by("setor").ascending()
+                .and(Sort.by("nome").ascending());
+
+        if (termo == null || termo.isBlank()) {
+            return listarTodos();
+        }
+
+        // Se for número → buscar por ramal
+        if (termo.matches("\\d+")) {
+            return repository.findByRamal(
+                    Integer.valueOf(termo),
+                    ordenacao
+            );
+        }
+
+        // Se for texto → buscar por setor ou nome
+        return repository.findBySetorContainingIgnoreCaseOrNomeContainingIgnoreCase(
+                termo,
+                termo,
+                ordenacao
+        );
+    }
+
     public Ramal salvar(Ramal ramal) {
         return repository.save(ramal);
     }

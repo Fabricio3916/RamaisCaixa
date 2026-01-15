@@ -39,6 +39,34 @@
             </a>
         </div>
 
+        <!-- Filtro de busca -->
+        <form method="get"
+              th:action="@{/ramais}"
+              class="row g-2 align-items-center mb-4">
+
+            <div class="col-md-6">
+                <input type="text"
+                       name="busca"
+                       th:value="${busca}"
+                       class="form-control"
+                       placeholder="Buscar por setor, nome ou ramal">
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    🔍 Buscar
+                </button>
+            </div>
+
+            <div class="col-md-2" th:if="${busca != null}">
+                <a th:href="@{/ramais}"
+                   class="btn btn-outline-secondary w-100">
+                    Limpar
+                </a>
+            </div>
+
+        </form>
+
         <!-- Tabela -->
         <table class="table table-striped table-bordered align-middle">
             <thead class="table-light">

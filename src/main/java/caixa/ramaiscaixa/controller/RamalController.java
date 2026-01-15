@@ -19,8 +19,18 @@ public class RamalController {
     }
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("ramais", service.listarTodos());
+    public String listar(
+            @RequestParam(value = "busca", required = false) String busca,
+            Model model
+    ) {
+
+        if (busca == null || busca.isBlank()) {
+            model.addAttribute("ramais", service.listarTodos());
+        } else {
+            model.addAttribute("ramais", service.buscar(busca));
+        }
+
+        model.addAttribute("busca", busca);
         return "ramais";
     }
 
