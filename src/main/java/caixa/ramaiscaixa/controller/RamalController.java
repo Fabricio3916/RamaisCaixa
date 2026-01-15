@@ -2,8 +2,10 @@ package caixa.ramaiscaixa.controller;
 
 import caixa.ramaiscaixa.model.Ramal;
 import caixa.ramaiscaixa.service.RamalService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -35,7 +37,16 @@ public class RamalController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute Ramal ramal) {
+    public String salvar(
+            @Valid @ModelAttribute Ramal ramal,
+            BindingResult result,
+            Model model
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("ramal", ramal);
+            return "ramal-form";
+        }
+
         service.salvar(ramal);
         return "redirect:/ramais";
     }

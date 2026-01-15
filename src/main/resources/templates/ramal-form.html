@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div th:replace="layout/base :: layout(
@@ -13,25 +14,54 @@
             th:text="${ramal.id == null ? 'Cadastrar Ramal' : 'Editar Ramal'}">
         </h2>
 
-        <form th:action="@{/ramais/salvar}" th:object="${ramal}" method="post">
+        <form th:action="@{/ramais/salvar}"
+              th:object="${ramal}"
+              method="post"
+              novalidate>
 
+            <!-- ID oculto (usado na edição) -->
             <input type="hidden" th:field="*{id}"/>
 
+            <!-- RAMAL -->
             <div class="mb-3">
                 <label class="form-label">Ramal</label>
-                <input type="number" th:field="*{ramal}" class="form-control" required>
+                <input type="number"
+                       th:field="*{ramal}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('ramal')} ? 'is-invalid'">
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('ramal')}"
+                     th:errors="*{ramal}">
+                </div>
             </div>
 
+            <!-- NOME -->
             <div class="mb-3">
                 <label class="form-label">Nome</label>
-                <input type="text" th:field="*{nome}" class="form-control" required>
+                <input type="text"
+                       th:field="*{nome}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('nome')}"
+                     th:errors="*{nome}">
+                </div>
             </div>
 
+            <!-- SETOR -->
             <div class="mb-3">
                 <label class="form-label">Setor</label>
-                <input type="text" th:field="*{setor}" class="form-control" required>
+                <input type="text"
+                       th:field="*{setor}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('setor')}"
+                     th:errors="*{setor}">
+                </div>
             </div>
 
+            <!-- AÇÕES -->
             <div class="d-flex justify-content-between">
                 <a th:href="@{/ramais}" class="btn btn-secondary">
                     Cancelar
