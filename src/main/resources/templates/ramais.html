@@ -1,56 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
-<div th:replace="layout/base :: layout(
+<div th:replace="~{layout/base :: layout(
         ~{::section},
         'Lista de Ramais'
-     )">
+     )}">
 
     <section>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Ramais</h2>
+        <!-- Top bar -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Lista de Ramais</h2>
+
+            <!-- Login -->
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="btn btn-outline-primary">
+                    Autenticar
+                </a>
+            </div>
+
+            <!-- Logout -->
+            <div sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline-danger">
+                        Sair
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Novo Ramal (ADMIN) -->
+        <div class="mb-3" sec:authorize="hasRole('ADMIN')">
             <a th:href="@{/ramais/novo}" class="btn btn-success">
-                Novo Ramal
+                ➕ Novo Ramal
             </a>
         </div>
 
-        <table class="table table-striped table-bordered">
+        <!-- Tabela -->
+        <table class="table table-striped table-bordered align-middle">
             <thead class="table-light">
             <tr>
-                <th>Ramal</th>
-                <th>Nome</th>
-                <th>Setor</th>
-                <th style="width: 150px">Ações</th>
+                <th class="text-center align-middle" style="width: 250px;">Setor</th>
+                <th class="text-center align-middle" style="width: 250px;">Nome</th>
+                <th class="text-center align-middle" style="width: 250px;">Ramal</th>
+                <th class="text-center align-middle" style="width: 160px">Ações</th>
             </tr>
             </thead>
-            <tbody>
 
+            <tbody>
             <tr th:if="${#lists.isEmpty(ramais)}">
-                <td colspan="4" class="text-center text-muted">
+                <td colspan="4" class="text-center text-muted align-middle">
                     Nenhum ramal cadastrado
                 </td>
             </tr>
 
-            <tr th:each="r : ${ramais}">
-                <td th:text="${r.ramal}"></td>
-                <td th:text="${r.nome}"></td>
-                <td th:text="${r.setor}"></td>
-                <td>
-                    <a th:href="@{/ramais/editar/{id}(id=${r.id})}"
-                       class="btn btn-sm btn-primary">
-                        Editar
-                    </a>
+            <tr th:each="ramal : ${ramais}">
+                <td class="text-center align-middle"
+                    th:text="${ramal.setor}">
+                </td>
 
-                    <a th:href="@{/ramais/excluir/{id}(id=${r.id})}"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Deseja excluir este ramal?');">
-                        Excluir
-                    </a>
+                <td class="text-center align-middle"
+                    th:text="${ramal.nome}">
+                </td>
+
+                <td class="text-center align-middle">
+            <span class="badge bg-secondary fs-6"
+                  th:text="${ramal.ramal}">
+            </span>
+                </td>
+
+                <td class="align-middle">
+                    <div class="d-flex justify-content-center gap-2"
+                         sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/ramais/editar/{id}(id=${ramal.id})}"
+                           class="btn btn-sm btn-primary">
+                            ✏️ Editar
+                        </a>
+
+                        <a th:href="@{/ramais/excluir/{id}(id=${ramal.id})}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Deseja realmente excluir este ramal?');">
+                            🗑️ Excluir
+                        </a>
+                    </div>
                 </td>
             </tr>
-
             </tbody>
         </table>
 
